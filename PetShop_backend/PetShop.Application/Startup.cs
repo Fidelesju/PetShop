@@ -24,6 +24,12 @@ namespace PetShop_backend
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.RegisterService();
+            services.AddDbContext<RoboSouDbContext>(options =>
+                options.UseMySql(Configuration.GetConnectionString(ConnectionArray()),
+                    ServerVersion.Parse("10.5.10-mariadb")));
+             services.AddSwaggerConfiguration();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -52,6 +58,8 @@ namespace PetShop_backend
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
+            
+            app.UseSwaggerConfiguration(Configuration);
         }
     }
 }
