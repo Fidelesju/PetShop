@@ -5,8 +5,10 @@ using System.Threading.Tasks;
 
 namespace PetShop_backend.PetShop.Data.ApplicationModels
 {
-    public class PersistenceError
+     public class PersistenceError
     {
-        
+        public string[] Keys { get; set; }
+        public string Field { get; set; }
+        public string Message { get; set; }
     }
 }

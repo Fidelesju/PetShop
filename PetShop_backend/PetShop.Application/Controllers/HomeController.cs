@@ -9,15 +9,22 @@ using System.Threading.Tasks;
 
 namespace PetShop_backend.Controllers
 {
+    [Route("[controller]"),ApiController]
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+         private readonly ILogger<HomeController> _logger;
 
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
         }
-
+        [HttpGet]
+        [Route("/[controller]/[action]/{id}")]
+        public ActionResult Overview(int? id)
+        {
+            return Ok(id);
+        }
+    /*
         public IActionResult Index()
         {
             return View();
@@ -32,6 +39,6 @@ namespace PetShop_backend.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
+        } */
     }
 }
