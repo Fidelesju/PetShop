@@ -1,11 +1,13 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Configuration;
+using Microsoft.OpenApi.Models;
 
 namespace PetShop_backend.PetShop.Application.Configurations
 {
-    public class SwaggerConfiguration
+    public static class SwaggerConfiguration
     {
         public static void AddSwaggerConfiguration(this IServiceCollection services)
         {
@@ -17,9 +19,45 @@ namespace PetShop_backend.PetShop.Application.Configurations
                 {
                     Title = "Pet Shop",
                     Description = "BackEnd Application"
-                    // Contact = new OpenApiContact() { Name = "Suporte", Email = "suporte@email.com.br" },
                 });
 
+              /*   c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Description = "Insira o token JWT desta maneira: Bearer {seu token}",
+                    Name = "Authorization",
+                    Scheme = "Bearer",
+                    BearerFormat = "JWT",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.ApiKey
+                }); */
+/* 
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            }
+                        },
+                        new string[] { }
+                    }
+                }); */
+            });
+        }
+
+        public static void UseSwaggerConfiguration(this IApplicationBuilder app, IConfiguration configuration)
+        {
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
+                //string swaggerEndPoint = configuration["SwaggerSettings:EndPoint"];
+                string swaggerRoutePrefix = configuration["SwaggerSettings:Prefix"];
+               // c.SwaggerEndpoint(swaggerEndPoint, "v1");
+                c.RoutePrefix = swaggerRoutePrefix;
             });
         }
     }
